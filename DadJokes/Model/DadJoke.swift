@@ -14,3 +14,9 @@ struct DadJoke: Decodable {
     let status: Int
     
 }
+
+// For use with a SwiftUI preview
+let testJoke = DadJoke(id: "eNuHJBQCdFd",
+                       joke: "How do you organize a space party? You planet.",
+                       status: 200)
+
