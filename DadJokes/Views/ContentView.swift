@@ -90,8 +90,12 @@ struct ContentView: View {
                     .bold()
                 Spacer()
             }
-            
-            List(favourites) { currentFavourite in
+
+            // Show the list of favourites
+            // NOTE: Rather than conform to identifiable, we will tell
+            // Swift to use the text of the item itself to identify it.
+            // We are making an assumption that text won't be the same...
+            List(favourites, id: \.self) { currentFavourite in
                 Text(currentFavourite.joke)
             }
             
