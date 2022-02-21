@@ -14,6 +14,12 @@ struct ContentView: View {
     // attached to the ".task" view modifier runs
     @State var currentJoke: DadJoke = DadJoke(id: "", joke: "", status: 200)
     
+    // This will keep track of the list of favourite jokes
+    @State var favourites: [DadJoke] = []
+    
+    // This will let us know whether the current joke exists as a favourite or not
+    @State var currentJokeAddedToFavourites: Bool = false
+    
     var body: some View {
         VStack {
             
@@ -33,7 +39,17 @@ struct ContentView: View {
             Image(systemName: "heart.circle")
                 .resizable()
                 .frame(width: 40, height: 40)
-                .foregroundColor(.secondary)
+                //                          CONDITION                   true    false
+                .foregroundColor(currentJokeAddedToFavourites == true ? .red : .secondary)
+                .onTapGesture {
+                    // Add to the list of favourites
+                    if currentJokeAddedToFavourites == false {
+                        // Add to list
+                        favourites.append(currentJoke)
+                        // Mark as added
+                        currentJokeAddedToFavourites = true
+                    }
+                }
             
             Button(action: {
                 
@@ -55,6 +71,10 @@ struct ContentView: View {
                 // the web server.
                 Task {
                     await loadNewJoke()
+                    
+                    // Reset flag to track whether current joke is a favourite
+                    currentJokeAddedToFavourites = false
+
                 }
                 
             }, label: {
@@ -71,10 +91,8 @@ struct ContentView: View {
                 Spacer()
             }
             
-            List {
-                Text("Which side of the chicken has more feathers? The outside.")
-                Text("Why did the Clydesdale give the pony a glass of water? Because he was a little horse!")
-                Text("The great thing about stationery shops is they're always in the same place...")
+            List(favourites) { currentFavourite in
+                Text(currentFavourite.joke)
             }
             
             Spacer()
