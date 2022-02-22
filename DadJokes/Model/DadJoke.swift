@@ -7,7 +7,16 @@
 
 import Foundation
 
-struct DadJoke: Decodable, Hashable {
+// Conforming to Codable is just a shortcut for
+// conforming to two protocols:
+//
+// Encodable (saving an instance of the structure to JSON)
+// - occurs when sending data to a web service
+// - occurs when saving data to a local file on the device
+// Decodable (populating an instance of the structure from JSON)
+// - occurs when receiving data from a web service
+// - occurs when loading data from a local file on the device
+struct DadJoke: Codable, Hashable {
     
     let id: String
     let joke: String
